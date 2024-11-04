@@ -193,6 +193,7 @@ the terminals last tested against Jexer:
 | mlterm         | X11                | yes         | yes          | yes    |
 | RLogin         | Windows            | yes         | yes          | yes    |
 | xterm.js(8)    | Web                | yes         | yes          | yes    |
+| Windows Terminal(6) | Windows       | yes         | yes          | yes    |
 | alacritty(3b)  | X11                | yes         | yes          | yes    |
 | gnome-terminal | X11                | yes         | yes          | no     |
 | iTerm2         | Mac                | yes         | yes          | no(5)  |
@@ -200,7 +201,7 @@ the terminals last tested against Jexer:
 | lcxterm        | CLI, Linux console | yes         | yes          | no     |
 | rxvt-unicode   | X11                | yes         | yes          | no(2)  |
 | xfce4-terminal | X11                | yes         | yes          | no     |
-| Windows Terminal(6) | Windows       | yes         | yes          | no     |
+| zutty          | X11                | yes         | yes          | no(2)  |
 | DomTerm(3)     | Web                | yes         | no           | yes    |
 | darktile       | X11                | yes         | no           | no(5)  |
 | konsole        | X11                | yes         | no           | no     |
@@ -226,8 +227,7 @@ the terminals last tested against Jexer:
 
 5 - Sixel images can crash terminal.
 
-6 - Version 1.4.3243.0, on Windows 10.0.19041.1.  Tested against
-    WSL-1 Debian instance.
+6 - Windows Terminal 1.22 Preview, released on August 27, 2024.
 
 7 - Both sixel and iTerm2 images.
 

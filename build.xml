@@ -49,8 +49,7 @@
            includeantruntime="false"
            debug="on"
            debuglevel="lines,vars,source"
-           target="1.6"
-           source="1.6"
+           release="8"
            >
       <compilerarg value="-Xlint"/>
       <compilerarg value="-Xdiags:verbose"/>
@@ -107,7 +106,6 @@
         use="true"
         access="protected"
         windowtitle="Jexer - Java Text User Interface - API docs"
-        additionalparam="--frames"
         >
       <fileset dir="${src.dir}" defaultexcludes="yes">
         <include name="jexer/**/*.java"/>
