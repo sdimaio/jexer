@@ -135,6 +135,7 @@ public class TDirectoryList extends TList {
      * (single-click)
      * @param filters a list of strings that files must match to be displayed
      */
+    @SuppressWarnings("this-escape")
     public TDirectoryList(final TWidget parent, final String path, final int x,
         final int y, final int width, final int height, final TAction action,
         final TAction singleClickAction, final List<String> filters) {

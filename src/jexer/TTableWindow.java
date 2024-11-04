@@ -73,6 +73,7 @@ public class TTableWindow extends TScrollableWindow {
      * @param parent the main application
      * @param title the window title
      */
+    @SuppressWarnings("this-escape")
     public TTableWindow(final TApplication parent, final String title) {
 
         super(parent, title, 0, 0, parent.getScreen().getWidth() / 2,
@@ -89,6 +90,7 @@ public class TTableWindow extends TScrollableWindow {
      * @param csvFile a File referencing the CSV data
      * @throws IOException if a java.io operation throws
      */
+    @SuppressWarnings("this-escape")
     public TTableWindow(final TApplication parent,
         final File csvFile) throws IOException {
 

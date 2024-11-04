@@ -100,6 +100,7 @@ public class TTreeViewWindow extends TScrollableWindow {
      * @param flags bitmask of RESIZABLE, CENTERED, or MODAL
      * @param action action to perform when an item is selected
      */
+    @SuppressWarnings("this-escape")
     public TTreeViewWindow(final TApplication parent, final String title,
         final int x, final int y, final int width, final int height,
         final int flags, final TAction action) {

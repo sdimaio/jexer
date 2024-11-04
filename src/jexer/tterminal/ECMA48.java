@@ -702,6 +702,7 @@ public class ECMA48 implements Runnable {
      * @throws UnsupportedEncodingException if an exception is thrown when
      * creating the InputStreamReader
      */
+    @SuppressWarnings("this-escape")
     public ECMA48(final DeviceType type, final InputStream inputStream,
         final OutputStream outputStream, final DisplayListener displayListener,
         final Backend backend) throws UnsupportedEncodingException {

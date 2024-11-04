@@ -94,6 +94,7 @@ public class SwingBackend extends GenericBackend {
      * @param fontSize the size in points.  Good values to pick are: 16, 20,
      * 22, and 24.
      */
+    @SuppressWarnings("this-escape")
     public SwingBackend(final Object listener, final int windowWidth,
         final int windowHeight, final int fontSize) {
 
@@ -120,6 +121,7 @@ public class SwingBackend extends GenericBackend {
      * @param fontSize the size in points.  Good values to pick are: 16, 20,
      * 22, and 24.
      */
+    @SuppressWarnings("this-escape")
     public SwingBackend(final JComponent component, final Object listener,
         final int windowWidth, final int windowHeight, final int fontSize) {
 

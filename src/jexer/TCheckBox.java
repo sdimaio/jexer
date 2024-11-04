@@ -96,6 +96,7 @@ public class TCheckBox extends TWidget {
      * @param checked initial check state
      * @param action the action to perform when the checkbox is toggled
      */
+    @SuppressWarnings("this-escape")
     public TCheckBox(final TWidget parent, final int x, final int y,
         final String label, final boolean checked, final TAction action) {
 

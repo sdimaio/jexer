@@ -131,7 +131,11 @@ public class HelpFile {
         topicsByTerm = new HashMap<String, Topic>();
 
         try {
-            loadTopics(input);
+            // Null check, in case input was loaded from ClassLoader from a
+            // file not actually on the classpath.
+            if (input != null) {
+                loadTopics(input);
+            }
         } finally {
             // Always generate the TOC and Index from what was read.
             generateTableOfContents();

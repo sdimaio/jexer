@@ -78,6 +78,7 @@ public class TExceptionDialog extends TWindow {
      * @param application TApplication that manages this window
      * @param exception the exception to display
      */
+    @SuppressWarnings("this-escape")
     public TExceptionDialog(final TApplication application,
         final Throwable exception) {
 

@@ -131,6 +131,7 @@ public class TTerminalWindow extends TScrollableWindow {
      * @param command the command line to execute
      * @param closeOnExit if true, close the window when the command exits
      */
+    @SuppressWarnings("this-escape")
     public TTerminalWindow(final TApplication application, final int x,
         final int y, final int flags, final String [] command,
         final boolean closeOnExit) {
@@ -199,6 +200,7 @@ public class TTerminalWindow extends TScrollableWindow {
      * @param flags mask of CENTERED, MODAL, or RESIZABLE
      * @param closeOnExit if true, close the window when the shell exits
      */
+    @SuppressWarnings("this-escape")
     public TTerminalWindow(final TApplication application, final int x,
         final int y, final int flags, final boolean closeOnExit) {
 

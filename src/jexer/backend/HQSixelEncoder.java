@@ -1770,6 +1770,7 @@ public class HQSixelEncoder implements SixelEncoder {
     /**
      * Public constructor.
      */
+    @SuppressWarnings("this-escape")
     public HQSixelEncoder() {
         reloadOptions();
     }

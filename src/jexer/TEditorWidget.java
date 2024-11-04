@@ -168,6 +168,7 @@ public class TEditorWidget extends TWidget implements EditMenuUser {
      * @param width width of text area
      * @param height height of text area
      */
+    @SuppressWarnings("this-escape")
     public TEditorWidget(final TWidget parent, final String text, final int x,
         final int y, final int width, final int height) {
 

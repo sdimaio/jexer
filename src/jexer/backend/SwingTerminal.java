@@ -394,6 +394,7 @@ public class SwingTerminal extends LogicalScreen
      * @param listener the object this backend needs to wake up when new
      * input comes in
      */
+    @SuppressWarnings("this-escape")
     public SwingTerminal(final Backend backend, final int windowWidth,
         final int windowHeight, final int fontSize, final Object listener) {
 
@@ -523,6 +524,7 @@ public class SwingTerminal extends LogicalScreen
      * @param listener the object this backend needs to wake up when new
      * input comes in
      */
+    @SuppressWarnings("this-escape")
     public SwingTerminal(final Backend backend, final JComponent component,
         final int windowWidth, final int windowHeight, final int fontSize,
         final Object listener) {

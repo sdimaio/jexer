@@ -67,6 +67,7 @@ public class DemoTableWindow extends TWindow {
      * @param parent the main application
      * @param title the text string
      */
+    @SuppressWarnings("this-escape")
     public DemoTableWindow(final TApplication parent, final String title) {
 
         super(parent, title, 0, 0, 44, 22, RESIZABLE);

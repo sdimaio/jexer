@@ -101,6 +101,7 @@ public class DemoPixelsWindow extends TWindow {
      *
      * @param parent the main application
      */
+    @SuppressWarnings("this-escape")
     public DemoPixelsWindow(final TApplication parent) {
         // Construct a demo window.  X and Y don't matter because it will be
         // centered on screen.

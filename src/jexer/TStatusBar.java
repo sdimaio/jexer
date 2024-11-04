@@ -130,6 +130,7 @@ public class TStatusBar extends TWidget {
      * @param window the window associated with this status bar
      * @param text text for the bar on the bottom row
      */
+    @SuppressWarnings("this-escape")
     public TStatusBar(final TWindow window, final String text) {
 
         // TStatusBar is a parentless widget, because TApplication handles

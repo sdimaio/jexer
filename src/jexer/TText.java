@@ -152,6 +152,7 @@ public class TText extends TScrollableWidget {
      * @param colorKey ColorTheme key color to use for foreground
      * text. Default is "ttext".
      */
+    @SuppressWarnings("this-escape")
     public TText(final TWidget parent, final String text, final int x,
             final int y, final int width, final int height,
             final String colorKey) {

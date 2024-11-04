@@ -89,11 +89,6 @@ public class TTableWidget extends TWidget {
     private static final boolean DEBUG = false;
 
     /**
-     * Row label width.
-     */
-    private static final int ROW_LABEL_WIDTH = 8;
-
-    /**
      * Column label height.
      */
     private static final int COLUMN_LABEL_HEIGHT = 1;
@@ -166,6 +161,11 @@ public class TTableWidget extends TWidget {
      * If true, show the column labels as the first row.
      */
     private boolean showColumnLabels = true;
+
+    /**
+     * Row label width.
+     */
+    private int rowLabelWidth = 8;
 
     /**
      * The top border for the first row.
@@ -395,6 +395,7 @@ public class TTableWidget extends TWidget {
          * @param column column index of this cell
          * @param row row index of this cell
          */
+        @SuppressWarnings("this-escape")
         public Cell(final TTableWidget parent, final int x, final int y,
             final int width, final int height, final int column,
             final int row) {
@@ -617,6 +618,7 @@ public class TTableWidget extends TWidget {
      * @param gridColumns number of columns in grid
      * @param gridRows number of rows in grid
      */
+    @SuppressWarnings("this-escape")
     public TTableWidget(final TWidget parent, final int x, final int y,
         final int width, final int height, final int gridColumns,
         final int gridRows) {
@@ -668,7 +670,7 @@ public class TTableWidget extends TWidget {
         }
         for (int j = 0; j < columns.size(); j++) {
             columns.get(j).setX((j * (COLUMN_DEFAULT_WIDTH + 1)) +
-                (showRowLabels ? ROW_LABEL_WIDTH : 0));
+                (showRowLabels ? rowLabelWidth : 0));
         }
         activate(columns.get(selectedColumn).get(selectedRow));
 
@@ -837,6 +839,8 @@ public class TTableWidget extends TWidget {
         CellAttributes labelColorSelected = getTheme().getColor("ttable.label.selected");
         CellAttributes borderColor = getTheme().getColor("ttable.border");
 
+        int myWidth = getWidth();
+
         // Column labels.
         if (showColumnLabels == true) {
             for (int i = left; i < columns.size(); i++) {
@@ -858,14 +862,15 @@ public class TTableWidget extends TWidget {
                     break;
                 }
                 putStringXY(0, rows.get(i).get(left).getY(),
-                    String.format(" %-6s ", rows.get(i).label),
+                    String.format(" %-" + (rowLabelWidth - 2) + "s ",
+                        rows.get(i).label),
                     (i == selectedRow ? labelColorSelected : labelColor));
             }
         }
 
         // Draw vertical borders.
         if (leftBorder == Border.SINGLE) {
-            vLineXY((showRowLabels ? ROW_LABEL_WIDTH : 0),
+            vLineXY((showRowLabels ? rowLabelWidth : 0),
                 (topBorder == Border.NONE ? 0 : 1) +
                     (showColumnLabels ? COLUMN_LABEL_HEIGHT : 0),
                 getHeight(), '\u2502', borderColor);
@@ -884,9 +889,9 @@ public class TTableWidget extends TWidget {
 
         // Draw horizontal borders.
         if (topBorder == Border.SINGLE) {
-            hLineXY((showRowLabels ? ROW_LABEL_WIDTH : 0),
+            hLineXY((showRowLabels ? rowLabelWidth : 0),
                 (showColumnLabels ? COLUMN_LABEL_HEIGHT : 0),
-                getWidth(), '\u2500', borderColor);
+                myWidth, '\u2500', borderColor);
         }
         for (int i = top; i < rows.size(); i++) {
             if (rows.get(i).get(left).isVisible() == false) {
@@ -894,24 +899,24 @@ public class TTableWidget extends TWidget {
             }
             if (rows.get(i).bottomBorder == Border.SINGLE) {
                 hLineXY((leftBorder == Border.NONE ? 0 : 1) +
-                        (showRowLabels ? ROW_LABEL_WIDTH : 0),
+                        (showRowLabels ? rowLabelWidth : 0),
                     rows.get(i).getY() + rows.get(i).height - 1,
-                    getWidth(), '\u2500', borderColor);
+                    myWidth, '\u2500', borderColor);
             } else if (rows.get(i).bottomBorder == Border.DOUBLE) {
                 hLineXY((leftBorder == Border.NONE ? 0 : 1) +
-                        (showRowLabels ? ROW_LABEL_WIDTH : 0),
+                        (showRowLabels ? rowLabelWidth : 0),
                     rows.get(i).getY() + rows.get(i).height - 1,
-                    getWidth(), '\u2550', borderColor);
+                    myWidth, '\u2550', borderColor);
             } else if (rows.get(i).bottomBorder == Border.THICK) {
                 hLineXY((leftBorder == Border.NONE ? 0 : 1) +
-                        (showRowLabels ? ROW_LABEL_WIDTH : 0),
+                        (showRowLabels ? rowLabelWidth : 0),
                     rows.get(i).getY() + rows.get(i).height - 1,
-                    getWidth(), '\u2501', borderColor);
+                    myWidth, '\u2501', borderColor);
             }
         }
         // Top-left corner if needed
         if ((topBorder == Border.SINGLE) && (leftBorder == Border.SINGLE)) {
-            putCharXY((showRowLabels ? ROW_LABEL_WIDTH : 0),
+            putCharXY((showRowLabels ? rowLabelWidth : 0),
                 (showColumnLabels ? COLUMN_LABEL_HEIGHT : 0),
                 '\u250c', borderColor);
         }
@@ -937,7 +942,7 @@ public class TTableWidget extends TWidget {
                     && (rows.get(i).bottomBorder == Border.SINGLE)
                 ) {
                     // Left tee
-                    putCharXY((showRowLabels ? ROW_LABEL_WIDTH : 0),
+                    putCharXY((showRowLabels ? rowLabelWidth : 0),
                         rows.get(i).getY() + rows.get(i).height - 1,
                         '\u251c', borderColor);
                 }
@@ -953,7 +958,7 @@ public class TTableWidget extends TWidget {
                     && (rows.get(i).bottomBorder == Border.DOUBLE)
                 ) {
                     // Left tee: single bar vertical, double bar horizontal
-                    putCharXY((showRowLabels ? ROW_LABEL_WIDTH : 0),
+                    putCharXY((showRowLabels ? rowLabelWidth : 0),
                         rows.get(i).getY() + rows.get(i).height - 1,
                         '\u255e', borderColor);
                 }
@@ -961,7 +966,7 @@ public class TTableWidget extends TWidget {
                     && (rows.get(i).bottomBorder == Border.THICK)
                 ) {
                     // Left tee: single bar vertical, thick bar horizontal
-                    putCharXY((showRowLabels ? ROW_LABEL_WIDTH : 0),
+                    putCharXY((showRowLabels ? rowLabelWidth : 0),
                         rows.get(i).getY() + rows.get(i).height - 1,
                         '\u251d', borderColor);
                 }
@@ -985,9 +990,6 @@ public class TTableWidget extends TWidget {
                 }
             }
         }
-
-        // Now draw the window borders.
-        super.draw();
     }
 
     // ------------------------------------------------------------------------
@@ -1173,6 +1175,24 @@ public class TTableWidget extends TWidget {
     }
 
     /**
+     * Get the width of the column used to show the row labels.
+     *
+     * @return the row label width
+     */
+    public int getRowLabelWidth() {
+        return rowLabelWidth;
+    }
+
+    /**
+     * Set the width of the column used to show the row labels.
+     *
+     * @param rowLabelWidth the new row label width
+     */
+    public void setRowLabelWidth(final int rowLabelWidth) {
+        this.rowLabelWidth = rowLabelWidth;
+    }
+
+    /**
      * Get the number of columns.
      *
      * @return the number of columns
@@ -1198,12 +1218,14 @@ public class TTableWidget extends TWidget {
     private void bottomRightCorner() {
         int viewColumns = getWidth();
         if (showRowLabels == true) {
-            viewColumns -= ROW_LABEL_WIDTH;
+            viewColumns -= rowLabelWidth;
         }
 
         // Set left and top such that the table stays on screen if possible.
         top = rows.size() - getHeight();
-        left = columns.size() - (getWidth() / (viewColumns / (COLUMN_DEFAULT_WIDTH + 1)));
+        int visibleColumnWidth = Math.max(1,
+            (viewColumns / (COLUMN_DEFAULT_WIDTH + 1)));
+        left = columns.size() - (getWidth() / visibleColumnWidth);
         // Now ensure the selection is visible.
         alignGrid();
     }
@@ -1220,7 +1242,7 @@ public class TTableWidget extends TWidget {
 
         int viewColumns = getWidth();
         if (showRowLabels == true) {
-            viewColumns -= ROW_LABEL_WIDTH;
+            viewColumns -= rowLabelWidth;
         }
         if (leftBorder != Border.NONE) {
             viewColumns--;
@@ -1261,7 +1283,7 @@ public class TTableWidget extends TWidget {
 
         boolean done = false;
         while (!done) {
-            int rightCellX = (showRowLabels ? ROW_LABEL_WIDTH : 0);
+            int rightCellX = (showRowLabels ? rowLabelWidth : 0);
             if (leftBorder != Border.NONE) {
                 rightCellX++;
             }
@@ -1272,7 +1294,8 @@ public class TTableWidget extends TWidget {
             for (int x = left; x < columns.size(); x++) {
                 if (x == selectedColumn) {
                     selectedX = rightCellX;
-                    if (selectedX + columns.get(x).width + 1 <= maxCellX) {
+                    if (selectedX + columns.get(x).width +
+                        (x == columns.size() - 1 ? 0 : 1) <= maxCellX) {
                         selectedIsVisible = true;
                     }
                 }
@@ -1304,7 +1327,7 @@ public class TTableWidget extends TWidget {
 
         // We have the left/right range correct, set cell visibility and
         // column X positions.
-        int leftCellX = showRowLabels ? ROW_LABEL_WIDTH : 0;
+        int leftCellX = showRowLabels ? rowLabelWidth : 0;
         if (leftBorder != Border.NONE) {
             leftCellX++;
         }
@@ -1312,7 +1335,9 @@ public class TTableWidget extends TWidget {
             if ((x < left) || (x > right)) {
                 for (int i = 0; i < rows.size(); i++) {
                     columns.get(x).get(i).setVisible(false);
-                    columns.get(x).setX(getWidth() + 1);
+                    // Just need a value guaranteed to be outside
+                    // TTableWidget's visible width.
+                    columns.get(x).setX(getWidth() + rowLabelWidth + 2);
                 }
                 continue;
             }
@@ -1452,8 +1477,23 @@ public class TTableWidget extends TWidget {
 
         try {
             writer = new BufferedWriter(new FileWriter(filename));
-            for (Row row: rows) {
-                List<String> list = new ArrayList<String>(row.cells.size());
+
+            List<String> list = new ArrayList<String>();
+            if (showColumnLabels) {
+                list.add("");
+                for (int i = 0; i < columns.size(); i++) {
+                    list.add(getColumnLabel(i));
+                }
+                writer.write(StringUtils.toCsv(list));
+                writer.write("\n");
+            }
+
+            for (int i = 0; i < rows.size(); i++) {
+                Row row = rows.get(i);
+                list = new ArrayList<String>(row.cells.size());
+                if (showRowLabels) {
+                    list.add(getRowLabel(i));
+                }
                 for (Cell cell: row.cells) {
                     list.add(cell.getText());
                 }
@@ -1836,25 +1876,22 @@ public class TTableWidget extends TWidget {
                 columns.size() + ", requested index " + column);
         }
 
-        if (width < 4) {
-            // Columns may not be smaller than 4 cells wide.
-            return;
-        }
+        // Columns may not be smaller than 4 cells wide.
+        int newWidth = Math.max(4, width);
 
-        int delta = width - columns.get(column).width;
-        columns.get(column).width = width;
+        columns.get(column).width = newWidth;
         for (Cell cell: columns.get(column).cells) {
             cell.setWidth(columns.get(column).width);
             cell.field.setWidth(columns.get(column).width);
         }
-        for (int i = column + 1; i < columns.size(); i++) {
-            columns.get(i).setX(columns.get(i).getX() + delta);
+
+        int leftX = (leftBorder == Border.NONE ? 0 : 1);
+        leftX += (showRowLabels ? rowLabelWidth : 0);
+        for (int i = 0; i < columns.size(); i++) {
+            columns.get(i).setX(leftX);
+            leftX += columns.get(i).width + 1;
         }
-        if (column == columns.size() - 1) {
-            bottomRightCorner();
-        } else {
-            alignGrid();
-        }
+        alignGrid();
     }
 
     /**
@@ -1911,6 +1948,7 @@ public class TTableWidget extends TWidget {
                 rows.size() + ", requested index " + row);
         }
         rows.get(row).label = label;
+        rowLabelWidth = Math.max(StringUtils.width(label) + 2, rowLabelWidth);
     }
 
     /**

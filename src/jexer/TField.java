@@ -172,6 +172,7 @@ public class TField extends TWidget implements EditMenuUser {
      * @param enterAction function to call when enter key is pressed
      * @param updateAction function to call when the text is updated
      */
+    @SuppressWarnings("this-escape")
     public TField(final TWidget parent, final int x, final int y,
         final int width, final boolean fixed, final String text,
         final TAction enterAction, final TAction updateAction) {

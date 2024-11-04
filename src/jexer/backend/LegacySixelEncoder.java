@@ -775,6 +775,7 @@ public class LegacySixelEncoder implements SixelEncoder {
     /**
      * Public constructor.
      */
+    @SuppressWarnings("this-escape")
     public LegacySixelEncoder() {
         reloadOptions();
     }

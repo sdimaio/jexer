@@ -90,6 +90,7 @@ public class TTextPictureWindow extends TScrollableWindow {
      * @param height height of window
      * @throws IOException if a java.io operation throws
      */
+    @SuppressWarnings("this-escape")
     public TTextPictureWindow(final TApplication parent, final String filename,
         final int x, final int y, final int width,
         final int height) throws IOException {

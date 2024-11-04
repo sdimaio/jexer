@@ -62,6 +62,7 @@ public class ColorTheme {
     /**
      * Public constructor sets the theme to the default.
      */
+    @SuppressWarnings("this-escape")
     public ColorTheme() {
         colors = new TreeMap<String, CellAttributes>();
         setDefaultTheme();

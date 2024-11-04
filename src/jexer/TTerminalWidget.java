@@ -228,6 +228,7 @@ public class TTerminalWidget extends TScrollableWidget
      * @param command the command line to execute
      * @param closeAction action to perform when the shell exits
      */
+    @SuppressWarnings("this-escape")
     public TTerminalWidget(final TWidget parent, final int x, final int y,
         final int width, final int height, final String [] command,
         final TAction closeAction) {
@@ -332,6 +333,7 @@ public class TTerminalWidget extends TScrollableWidget
      * @param height height of widget
      * @param closeAction action to perform when the shell exits
      */
+    @SuppressWarnings("this-escape")
     public TTerminalWidget(final TWidget parent, final int x, final int y,
         final int width, final int height, final TAction closeAction) {
 

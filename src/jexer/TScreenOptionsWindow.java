@@ -216,7 +216,7 @@ public class TScreenOptionsWindow extends TWindow {
     /**
      * The original window opacity.
      */
-    private int oldWindowOpacity;
+    private int oldWindowOpacity = 100;
 
     // ------------------------------------------------------------------------
     // Constructors -----------------------------------------------------------
@@ -227,6 +227,7 @@ public class TScreenOptionsWindow extends TWindow {
      *
      * @param application the TApplication that manages this window
      */
+    @SuppressWarnings("this-escape")
     public TScreenOptionsWindow(final TApplication application) {
 
         // Register with the TApplication
@@ -318,9 +319,11 @@ public class TScreenOptionsWindow extends TWindow {
 
         // Window opacity
         int alpha = getAlpha();
+        oldWindowOpacity = 95;
         try {
-            alpha = Integer.parseInt(System.getProperty(
-                "jexer.TWindow.opacity", "95")) * 255 / 100;
+            oldWindowOpacity = Integer.parseInt(System.getProperty(
+                "jexer.TWindow.opacity", "95"));
+            alpha = oldWindowOpacity * 255 / 100;
         } catch (NumberFormatException e) {
             // SQUASH
         }
@@ -893,6 +896,9 @@ public class TScreenOptionsWindow extends TWindow {
                         ecmaTerminal.setWideCharImages(oldWideCharImages);
                         ecmaTerminal.setRgbColor(oldRgbColor);
                     }
+                    getApplication().setWindowOpacity(oldWindowOpacity);
+                    System.setProperty("jexer.TWindow.opacity",
+                        Integer.toString(oldWindowOpacity));
                     TScreenOptionsWindow.this.close();
                 }
             });

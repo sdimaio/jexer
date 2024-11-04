@@ -94,6 +94,7 @@ public class TTreeViewWidget extends TScrollableWidget {
      * @param height height of tree view
      * @param action action to perform when an item is selected
      */
+    @SuppressWarnings("this-escape")
     public TTreeViewWidget(final TWidget parent, final int x, final int y,
         final int width, final int height, final TAction action) {
 

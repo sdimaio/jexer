@@ -117,6 +117,7 @@ public class TTreeItem extends TWidget {
      * @param text text for this item
      * @param expanded if true, have it expanded immediately
      */
+    @SuppressWarnings("this-escape")
     public TTreeItem(final TTreeView view, final String text,
         final boolean expanded) {
 

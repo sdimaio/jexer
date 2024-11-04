@@ -59,6 +59,7 @@ public class DesktopDemoApplication extends TApplication {
      * @param backendType one of the TApplication.BackendType values
      * @throws Exception if TApplication can't instantiate the Backend.
      */
+    @SuppressWarnings("this-escape")
     public DesktopDemoApplication(final BackendType backendType) throws Exception {
         super(backendType);
         addAllWidgets();

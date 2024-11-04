@@ -67,6 +67,7 @@ public class TParagraph extends TWidget {
      * @param parent parent widget
      * @param words the pieces of the paragraph to display
      */
+    @SuppressWarnings("this-escape")
     public TParagraph(final THelpText parent, final List<TWord> words) {
 
         // Set parent and window

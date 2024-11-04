@@ -80,6 +80,7 @@ public class DemoApplication extends TApplication {
      * @throws UnsupportedEncodingException if an exception is thrown when
      * creating the InputStreamReader
      */
+    @SuppressWarnings("this-escape")
     public DemoApplication(final InputStream input,
         final OutputStream output) throws UnsupportedEncodingException {
         super(input, output);
@@ -100,6 +101,7 @@ public class DemoApplication extends TApplication {
      * which uses System.in.
      * @throws IllegalArgumentException if input, reader, or writer are null.
      */
+    @SuppressWarnings("this-escape")
     public DemoApplication(final InputStream input, final Reader reader,
         final PrintWriter writer, final boolean setRawMode) {
         super(input, reader, writer, setRawMode);
@@ -128,6 +130,7 @@ public class DemoApplication extends TApplication {
      *
      * @param backend a Backend that is already ready to go.
      */
+    @SuppressWarnings("this-escape")
     public DemoApplication(final Backend backend) {
         super(backend);
 
@@ -140,11 +143,33 @@ public class DemoApplication extends TApplication {
      * @param backendType one of the TApplication.BackendType values
      * @throws Exception if TApplication can't instantiate the Backend.
      */
+    @SuppressWarnings("this-escape")
     public DemoApplication(final BackendType backendType) throws Exception {
         // For the Swing demo, use an initial size of 82x28 so that a
         // terminal window precisely fits the window.
         super(backendType, (backendType == BackendType.SWING ? 82 : -1),
             (backendType == BackendType.SWING ? 28 : -1), 20);
+        addAllWidgets();
+        getBackend().setTitle(i18n.getString("applicationTitle"));
+
+        // Use cute theme by default.
+        onMenu(new TMenuEvent(getBackend(), 10001));
+    }
+
+    /**
+     * Public constructor.
+     *
+     * @param backendType one of the TApplication.BackendType values
+     * @param windowWidth the number of text columns to start with
+     * @param windowHeight the number of text rows to start with
+     * @param fontSize the size in points
+     * @throws Exception if TApplication can't instantiate the Backend.
+     */
+    @SuppressWarnings("this-escape")
+    public DemoApplication(final BackendType backendType, final int windowWidth,
+        final int windowHeight, final int fontSize) throws Exception {
+
+        super(backendType, windowWidth, windowHeight, fontSize);
         addAllWidgets();
         getBackend().setTitle(i18n.getString("applicationTitle"));
 

@@ -317,6 +317,7 @@ public class TWindow extends TWidget {
      * @param height height of window
      * @param flags mask of RESIZABLE, CENTERED, or MODAL
      */
+    @SuppressWarnings("this-escape")
     public TWindow(final TApplication application, final String title,
         final int x, final int y, final int width, final int height,
         final int flags) {

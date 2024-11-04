@@ -114,6 +114,7 @@ public class DemoMainWindow extends TWindow {
      *
      * @param parent the main application
      */
+    @SuppressWarnings("this-escape")
     public DemoMainWindow(final TApplication parent) {
         this(parent, CENTERED | RESIZABLE);
     }
@@ -124,6 +125,7 @@ public class DemoMainWindow extends TWindow {
      * @param parent the main application
      * @param flags bitmask of MODAL, CENTERED, or RESIZABLE
      */
+    @SuppressWarnings("this-escape")
     private DemoMainWindow(final TApplication parent, final int flags) {
         // Construct a demo window.  X and Y don't matter because it will be
         // centered on screen.

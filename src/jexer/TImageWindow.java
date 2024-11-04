@@ -98,6 +98,7 @@ public class TImageWindow extends TScrollableWindow {
      * @param height height of window
      * @throws IOException if a java.io operation throws
      */
+    @SuppressWarnings("this-escape")
     public TImageWindow(final TApplication parent, final File file,
         final int x, final int y, final int width,
         final int height) throws IOException {

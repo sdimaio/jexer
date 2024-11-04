@@ -70,6 +70,7 @@ public class MultiBackend implements Backend {
      *
      * @param backend the backend to add
      */
+    @SuppressWarnings("this-escape")
     public MultiBackend(final Backend backend) {
         backends.add(backend);
         if (backend instanceof TWindowBackend) {

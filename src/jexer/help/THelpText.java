@@ -79,6 +79,7 @@ public class THelpText extends TScrollableWidget {
      * @param width width of text area
      * @param height height of text area
      */
+    @SuppressWarnings("this-escape")
     public THelpText(final THelpWindow parent, final Topic topic, final int x,
         final int y, final int width, final int height) {
 

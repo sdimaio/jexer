@@ -77,6 +77,7 @@ public class ECMA48Backend extends GenericBackend {
      * @throws UnsupportedEncodingException if an exception is thrown when
      * creating the InputStreamReader
      */
+    @SuppressWarnings("this-escape")
     public ECMA48Backend(final Object listener, final InputStream input,
         final OutputStream output, final int windowWidth,
         final int windowHeight, final int fontSize)
@@ -131,6 +132,7 @@ public class ECMA48Backend extends GenericBackend {
      * @throws UnsupportedEncodingException if an exception is thrown when
      * creating the InputStreamReader
      */
+    @SuppressWarnings("this-escape")
     public ECMA48Backend(final Object listener, final InputStream input,
         final OutputStream output,
         final boolean readOnly) throws UnsupportedEncodingException {
@@ -162,6 +164,7 @@ public class ECMA48Backend extends GenericBackend {
      * which uses System.in.
      * @throws IllegalArgumentException if input, reader, or writer are null.
      */
+    @SuppressWarnings("this-escape")
     public ECMA48Backend(final Object listener, final InputStream input,
         final Reader reader, final PrintWriter writer,
         final boolean setRawMode) {

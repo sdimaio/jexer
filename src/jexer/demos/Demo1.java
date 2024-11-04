@@ -59,7 +59,21 @@ public class Demo1 {
                     backendType = TApplication.BackendType.XTERM;
                 }
             }
-            DemoApplication app = new DemoApplication(backendType);
+            DemoApplication app;
+            if (backendType == TApplication.BackendType.SWING) {
+                int fontSize = 20;
+                try {
+                    fontSize = Integer.parseInt(
+                        System.getProperty("jexer.Swing.fontSize", "20"));
+                    // Keep requested font size between 16 and 32 pt.
+                    fontSize = Math.min(32, Math.max(16, fontSize));
+                } catch (NumberFormatException e) {
+                    // SQUASH
+                }
+                app = new DemoApplication(backendType, 90, 30, fontSize);
+            } else {
+                app = new DemoApplication(backendType);
+            }
             (new Thread(app)).start();
         } catch (Exception e) {
             e.printStackTrace();

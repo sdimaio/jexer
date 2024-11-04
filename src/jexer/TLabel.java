@@ -153,6 +153,7 @@ public class TLabel extends TWidget {
      * @param useWindowBackground if true, use the window's background color
      * @param action to call when shortcut is pressed
      */
+    @SuppressWarnings("this-escape")
     public TLabel(final TWidget parent, final String text, final int x,
         final int y, final String colorKey, final boolean useWindowBackground,
         final TAction action) {

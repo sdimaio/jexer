@@ -103,6 +103,7 @@ public class Document {
      * @param str the text string
      * @param defaultColor the color for unhighlighted text
      */
+    @SuppressWarnings("this-escape")
     public Document(final String str, final CellAttributes defaultColor) {
         this.defaultColor = defaultColor;
 

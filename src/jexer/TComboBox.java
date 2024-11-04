@@ -90,6 +90,7 @@ public class TComboBox extends TWidget {
      * @param updateAction action to call when a new value is selected from
      * the list or enter is pressed in the edit field
      */
+    @SuppressWarnings("this-escape")
     public TComboBox(final TWidget parent, final int x, final int y,
         final int width, final List<String> values, final int valuesIndex,
         final int maxValuesHeight, final TAction updateAction) {

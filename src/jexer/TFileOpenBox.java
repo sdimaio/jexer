@@ -153,6 +153,7 @@ public class TFileOpenBox extends TWindow {
      * @param filters a list of strings that files must match to be displayed
      * @throws IOException of a java.io operation throws
      */
+    @SuppressWarnings("this-escape")
     public TFileOpenBox(final TApplication application, final String path,
         final Type type, final List<String> filters) throws IOException {
 

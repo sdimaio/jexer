@@ -61,6 +61,7 @@ public class TDesktop extends TWindow {
      *
      * @param parent parent application
      */
+    @SuppressWarnings("this-escape")
     public TDesktop(final TApplication parent) {
         super(parent, "", 0, 0, parent.getScreen().getWidth(),
             parent.getDesktopBottom() - parent.getDesktopTop());

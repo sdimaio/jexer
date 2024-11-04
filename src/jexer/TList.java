@@ -154,6 +154,7 @@ public class TList extends TScrollableWidget {
      * @param singleClickAction action to perform when the user clicks on an
      * item
      */
+    @SuppressWarnings("this-escape")
     public TList(final TWidget parent, final List<String> strings, final int x,
         final int y, final int width, final int height,
         final TAction enterAction, final TAction moveAction,
@@ -457,7 +458,7 @@ public class TList extends TScrollableWidget {
      * @param index -1 to unselect, otherwise the index into the list
      */
     public final void setSelectedIndex(final int index) {
-        if ((strings.size() == 0) || (index < 0)) {
+        if ((strings == null) || (strings.size() == 0) || (index < 0)) {
             toTop();
             selectedString = -1;
             return;

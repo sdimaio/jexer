@@ -69,6 +69,7 @@ public class DemoTreeViewWindow extends TWindow {
      * @param parent the main application
      * @throws IOException if a java.io operation throws
      */
+    @SuppressWarnings("this-escape")
     public DemoTreeViewWindow(final TApplication parent) throws IOException {
         super(parent, i18n.getString("windowTitle"), 0, 0, 44, 16,
             TWindow.RESIZABLE);

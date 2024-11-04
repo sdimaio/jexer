@@ -87,6 +87,7 @@ public class TTYSessionInfo implements SessionInfo {
     /**
      * Public constructor.
      */
+    @SuppressWarnings("this-escape")
     public TTYSessionInfo() {
         // Populate lang and user from the environment
         username = System.getProperty("user.name");

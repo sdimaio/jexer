@@ -97,7 +97,7 @@ public class THelpWindow extends TWindow {
      * @param topic the topic to start on
      */
     public THelpWindow(final TApplication application, final String topic) {
-        this (application, application.helpFile.getTopic(topic));
+        this(application, application.helpFile.getTopic(topic));
     }
 
     /**
@@ -106,6 +106,7 @@ public class THelpWindow extends TWindow {
      * @param application TApplication that manages this window
      * @param topic the topic to start on
      */
+    @SuppressWarnings("this-escape")
     public THelpWindow(final TApplication application, final Topic topic) {
         super(application, i18n.getString("windowTitle"),
             1, 1, 78, 22, CENTERED | RESIZABLE);

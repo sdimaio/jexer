@@ -149,6 +149,7 @@ public class CellAttributes {
      * @param that another CellAttributes instance
      * @see #reset()
      */
+    @SuppressWarnings("this-escape")
     public CellAttributes(final CellAttributes that) {
         setTo(that);
     }

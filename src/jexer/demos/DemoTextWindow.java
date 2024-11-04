@@ -70,6 +70,7 @@ public class DemoTextWindow extends TWindow {
      * @param title the text string
      * @param text the text string
      */
+    @SuppressWarnings("this-escape")
     public DemoTextWindow(final TApplication parent, final String title,
         final String text) {
 

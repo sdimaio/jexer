@@ -88,6 +88,7 @@ public class Line {
      * @param defaultColor the color for unhighlighted text
      * @param highlighter the highlighter to use
      */
+    @SuppressWarnings("this-escape")
     public Line(final String str, final CellAttributes defaultColor,
         final Highlighter highlighter) {
 

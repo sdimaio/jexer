@@ -180,6 +180,7 @@ public class TMenu extends TWindow {
      * shortcut (mnemonic), denoted by prefixing a letter with "&amp;",
      * e.g. "&amp;File"
      */
+    @SuppressWarnings("this-escape")
     public TMenu(final TApplication parent, final int x, final int y,
         final String label) {
 

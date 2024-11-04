@@ -682,6 +682,7 @@ public class TEditColorThemeWindow extends TWindow {
      *
      * @param application the TApplication that manages this window
      */
+    @SuppressWarnings("this-escape")
     public TEditColorThemeWindow(final TApplication application) {
 
         // Register with the TApplication

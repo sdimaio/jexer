@@ -724,6 +724,7 @@ public class TApplication implements Runnable {
      * @throws UnsupportedEncodingException if an exception is thrown when
      * creating the InputStreamReader
      */
+    @SuppressWarnings("this-escape")
     public TApplication(final BackendType backendType, final int windowWidth,
         final int windowHeight, final int fontSize)
         throws UnsupportedEncodingException {
@@ -761,6 +762,7 @@ public class TApplication implements Runnable {
      * @throws UnsupportedEncodingException if an exception is thrown when
      * creating the InputStreamReader
      */
+    @SuppressWarnings("this-escape")
     public TApplication(final BackendType backendType)
         throws UnsupportedEncodingException {
 
@@ -805,6 +807,7 @@ public class TApplication implements Runnable {
      * @throws UnsupportedEncodingException if an exception is thrown when
      * creating the InputStreamReader
      */
+    @SuppressWarnings("this-escape")
     public TApplication(final InputStream input,
         final OutputStream output) throws UnsupportedEncodingException {
 
@@ -824,6 +827,7 @@ public class TApplication implements Runnable {
      * which uses System.in.
      * @throws IllegalArgumentException if input, reader, or writer are null.
      */
+    @SuppressWarnings("this-escape")
     public TApplication(final InputStream input, final Reader reader,
         final PrintWriter writer, final boolean setRawMode) {
 
@@ -852,6 +856,7 @@ public class TApplication implements Runnable {
      *
      * @param backend a Backend that is already ready to go.
      */
+    @SuppressWarnings("this-escape")
     public TApplication(final Backend backend) {
         this.backend = backend;
         backend.setListener(this);

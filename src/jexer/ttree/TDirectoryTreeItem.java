@@ -83,6 +83,7 @@ public class TDirectoryTreeItem extends TTreeItem {
      * return the root path entry
      * @throws IOException if a java.io operation throws
      */
+    @SuppressWarnings("this-escape")
     public TDirectoryTreeItem(final TTreeViewWidget view, final String text,
         final boolean expanded, final boolean openParents) throws IOException {
 

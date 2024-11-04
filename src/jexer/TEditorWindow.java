@@ -96,6 +96,7 @@ public class TEditorWindow extends TScrollableWindow {
      * @param parent the main application
      * @param title the window title
      */
+    @SuppressWarnings("this-escape")
     public TEditorWindow(final TApplication parent, final String title) {
 
         super(parent, title, 0, 0, parent.getScreen().getWidth(),
@@ -112,6 +113,7 @@ public class TEditorWindow extends TScrollableWindow {
      * @param title the window title, usually a filename
      * @param contents the data for the editing window, usually the file data
      */
+    @SuppressWarnings("this-escape")
     public TEditorWindow(final TApplication parent, final String title,
         final String contents) {
 
@@ -130,6 +132,7 @@ public class TEditorWindow extends TScrollableWindow {
      * @param file the file to open
      * @throws IOException if a java.io operation throws
      */
+    @SuppressWarnings("this-escape")
     public TEditorWindow(final TApplication parent,
         final File file) throws IOException {
 

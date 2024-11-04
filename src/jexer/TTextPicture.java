@@ -116,6 +116,7 @@ public class TTextPicture extends TScrollableWidget
      * @param width width of text area
      * @param height height of text area
      */
+    @SuppressWarnings("this-escape")
     public TTextPicture(final TWidget parent, final String filename,
         final int x, final int y, final int width, final int height) {
 

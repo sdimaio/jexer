@@ -176,6 +176,7 @@ public class TMessageBox extends TWindow {
      * @param yield if true, yield this Thread.  Subclasses need to set this
      * to false and yield at their end of their constructor intead.
      */
+    @SuppressWarnings("this-escape")
     protected TMessageBox(final TApplication application, final String title,
         final String caption, final Type type, final boolean yield) {
 

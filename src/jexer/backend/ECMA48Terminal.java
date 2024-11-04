@@ -338,6 +338,21 @@ public class ECMA48Terminal extends LogicalScreen
     private boolean hasSynchronizedOutput = false;
 
     /**
+     * If true, this terminal requires explicitly overwriting images
+     * with black pixels to destroy them.  If false, overwriting
+     * images with text will destroy them.  Konsole is the only
+     * terminal known at this time that requires
+     * explicitlyDestroyImages to be true.
+     */
+    private boolean explicitlyDestroyImages = false;
+
+    /**
+     * The cells containing all-black pixels used to erase images when
+     * explicityDestroyImages is true.  Only initialized if needed.
+     */
+    private ArrayList<Cell> blankImageRow = null;
+
+    /**
      * The time we last flushed output in flushPhysical().
      */
     private long lastFlushTime;
@@ -567,6 +582,7 @@ public class ECMA48Terminal extends LogicalScreen
      * @throws UnsupportedEncodingException if an exception is thrown when
      * creating the InputStreamReader
      */
+    @SuppressWarnings("this-escape")
     public ECMA48Terminal(final Backend backend, final Object listener,
         final InputStream input, final OutputStream output,
         final int windowWidth,
@@ -606,6 +622,7 @@ public class ECMA48Terminal extends LogicalScreen
      * @throws UnsupportedEncodingException if an exception is thrown when
      * creating the InputStreamReader
      */
+    @SuppressWarnings("this-escape")
     public ECMA48Terminal(final Backend backend, final Object listener,
         final InputStream input,
         final OutputStream output) throws UnsupportedEncodingException {
@@ -717,6 +734,7 @@ public class ECMA48Terminal extends LogicalScreen
      * which uses System.in.
      * @throws IllegalArgumentException if input, reader, or writer are null.
      */
+    @SuppressWarnings("this-escape")
     public ECMA48Terminal(final Backend backend, final Object listener,
         final InputStream input, final Reader reader, final PrintWriter writer,
         final boolean setRawMode) {
@@ -1123,6 +1141,14 @@ public class ECMA48Terminal extends LogicalScreen
             imagesOverText = true;
         } else {
             imagesOverText = false;
+        }
+
+        String destroyImagesStr = System.getProperty("jexer.ECMA48.explicitlyDestroyImages",
+            "auto").toLowerCase();
+        if (destroyImagesStr.equals("true")) {
+            explicitlyDestroyImages = true;
+        } else {
+            explicitlyDestroyImages = false;
         }
 
         // Image thread count.
@@ -1694,7 +1720,6 @@ public class ECMA48Terminal extends LogicalScreen
         } // for (int x = 0; x < width; x++)
     }
 
-
     /**
      * Render the screen to a string that can be emitted to something that
      * knows how to process ECMA-48/ANSI X3.64 escape sequences.
@@ -1714,21 +1739,31 @@ public class ECMA48Terminal extends LogicalScreen
         }
 
         /*
-         * For images support, draw all of the image output first, and then
-         * draw everything else afterwards.
+         * For images support, draw all of the image output first, and
+         * then draw all the text afterwards.
          */
         GlyphMaker glyphMaker = GlyphMaker.getInstance(getTextHeight());
         for (int y = 0; y < height; y++) {
             boolean unsetRow = false;
+            boolean eraseImagesOnRow = false;
             for (int x = 0; x < width; x++) {
-                // If physical had non-image data that is now image data, the
-                // entire row must be redrawn.
                 Cell lCell = logical[x][y];
                 Cell pCell = physical[x][y];
 
+                // If physical has image data that will be overwritten
+                // by text, then erase all of the images on this row
+                // for terminals that require explicitlyDestroyImages
+                // to be true.
+                if (pCell.isImage() && !lCell.isImage()) {
+                    eraseImagesOnRow = true;
+                }
+
+                // If physical had non-image data that is now image data, the
+                // entire row must be redrawn.
                 if (lCell.isImage() && !pCell.isImage()) {
                     unsetRow = true;
                 }
+
                 int ch = lCell.getChar();
                 if (!lCell.isImage()
                     && (StringUtils.isLegacyComputingSymbol(ch)
@@ -1747,7 +1782,38 @@ public class ECMA48Terminal extends LogicalScreen
             if (unsetRow) {
                 unsetImageRow(y);
             }
-        }
+
+            if (explicitlyDestroyImages && eraseImagesOnRow) {
+                for (int x = 0; x < width; x++) {
+                    physical[x][y].unset();
+                }
+                if ((blankImageRow == null)
+                    || (blankImageRow.size() < width)
+                ) {
+                    blankImageRow = new ArrayList<Cell>(width);
+                    Cell blank = new Cell();
+                    BufferedImage newImage = new BufferedImage(textWidthPixels,
+                        textHeightPixels, BufferedImage.TYPE_INT_ARGB);
+                    java.awt.Graphics gr = newImage.getGraphics();
+                    gr.setColor(java.awt.Color.BLACK);
+                    gr.fillRect(0, 0, newImage.getWidth(),
+                        newImage.getHeight());
+                    gr.dispose();
+                    blank.setImage(newImage);
+                    for (int x = 0; x < width; x++) {
+                        blankImageRow.add(new Cell(blank));
+                    }
+                }
+                if (iterm2Images) {
+                    sb.append(toIterm2Image(0, y, blankImageRow));
+                } else if (jexerImageOption != JexerImageOption.DISABLED) {
+                    sb.append(toJexerImage(0, y, blankImageRow));
+                } else {
+                    sb.append(toSixel(0, y, blankImageRow));
+                }
+            }
+
+        } //for (int y = 0; y < height; y++) {
 
         /*
          * Image encoding is expensive, especially when the image is not in
@@ -2464,6 +2530,7 @@ public class ECMA48Terminal extends LogicalScreen
         if (text.contains("WezTerm")
             || text.contains("mintty")
             || text.contains("iTerm2")
+            || text.contains("Konsole")
         ) {
             String str = System.getProperty("jexer.ECMA48.iTerm2Images");
             if ((str != null) && (str.equals("false"))) {
@@ -2484,6 +2551,27 @@ public class ECMA48Terminal extends LogicalScreen
                 iterm2BottomRow = true;
             }
         }
+
+        // Konsole places image data underneath text, such that
+        // erasing text will re-expose the image.  We need to
+        // explicitly destroy any images being overwritten by text for
+        // that case.
+        if (text.contains("Konsole")) {
+            String str = System.getProperty("jexer.ECMA48.explicitlyDestroyImages");
+            if ((str != null) && (str.equals("false"))) {
+                if (debugToStderr) {
+                    System.err.println("  -- terminal requires " +
+                        "explicitlyDestroyImages, but is disabled in config");
+                }
+                explicitlyDestroyImages = false;
+            } else {
+                if (debugToStderr) {
+                    System.err.println("  -- terminal requires explicitlyDestroyImages");
+                }
+                explicitlyDestroyImages = true;
+            }
+        }
+
     }
 
     /**

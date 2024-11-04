@@ -69,6 +69,7 @@ public class TWord extends TWidget {
      * @param words the words to display
      * @param link link to other topic, or null
      */
+    @SuppressWarnings("this-escape")
     public TWord(final String words, final Link link) {
 
         // TWord is created by THelpText before the TParagraph is belongs to

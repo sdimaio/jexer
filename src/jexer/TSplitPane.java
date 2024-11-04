@@ -103,6 +103,7 @@ public class TSplitPane extends TWidget {
      * @param height height of widget
      * @param vertical if true, split vertically
      */
+    @SuppressWarnings("this-escape")
     public TSplitPane(final TWidget parent, final int x, final int y,
         final int width, final int height, final boolean vertical) {
 

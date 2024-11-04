@@ -160,6 +160,7 @@ public class TWindowBackend extends TWindow implements Backend {
      * @param width width of window
      * @param height height of window
      */
+    @SuppressWarnings("this-escape")
     public TWindowBackend(final Object listener,
         final TApplication application, final String title,
         final int width, final int height) {
@@ -186,6 +187,7 @@ public class TWindowBackend extends TWindow implements Backend {
      * @param height height of window
      * @param flags bitmask of RESIZABLE, CENTERED, or MODAL
      */
+    @SuppressWarnings("this-escape")
     public TWindowBackend(final Object listener,
         final TApplication application, final String title,
         final int width, final int height, final int flags) {
@@ -213,6 +215,7 @@ public class TWindowBackend extends TWindow implements Backend {
      * @param width width of window
      * @param height height of window
      */
+    @SuppressWarnings("this-escape")
     public TWindowBackend(final Object listener,
         final TApplication application, final String title,
         final int x, final int y, final int width, final int height) {
@@ -241,6 +244,7 @@ public class TWindowBackend extends TWindow implements Backend {
      * @param height height of window
      * @param flags mask of RESIZABLE, CENTERED, or MODAL
      */
+    @SuppressWarnings("this-escape")
     public TWindowBackend(final Object listener,
         final TApplication application, final String title,
         final int x, final int y, final int width, final int height,

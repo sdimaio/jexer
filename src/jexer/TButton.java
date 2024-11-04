@@ -169,6 +169,7 @@ public class TButton extends TWidget {
      * @param x column relative to parent
      * @param y row relative to parent
      */
+    @SuppressWarnings("this-escape")
     private TButton(final TWidget parent, final String text,
         final int x, final int y) {
 
@@ -783,6 +784,13 @@ public class TButton extends TWidget {
         } else {
             style = Style.SQUARE;
         }
+
+        leftEdgeChar = null;
+        rightEdgeChar = null;
+        leftEdgeShadowChar = null;
+        rightEdgeShadowCharTop = null;
+        rightEdgeShadowCharBottom = null;
+        shadowColor = null;
     }
 
 

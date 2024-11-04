@@ -94,6 +94,7 @@ public class SwingComponent {
      *
      * @param frame the JFrame to draw to
      */
+    @SuppressWarnings("this-escape")
     public SwingComponent(final JFrame frame) {
         this.frame = frame;
         if (System.getProperty("os.name").startsWith("Linux")) {
@@ -114,6 +115,7 @@ public class SwingComponent {
      *
      * @param component the JComponent to draw to
      */
+    @SuppressWarnings("this-escape")
     public SwingComponent(final JComponent component) {
         this.component = component;
         adjustInsets = new Insets(BORDER, BORDER, BORDER, BORDER);

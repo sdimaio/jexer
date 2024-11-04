@@ -96,6 +96,7 @@ public class TInputBox extends TMessageBox {
      * @param text initial text to seed the field with
      * @param type one of the Type constants.  Default is Type.OK.
      */
+    @SuppressWarnings("this-escape")
     public TInputBox(final TApplication application, final String title,
         final String caption, final String text, final Type type) {
 
