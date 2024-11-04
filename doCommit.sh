@@ -8,8 +8,8 @@ git status
 git add .
 now=$(date +"%d_%m_%Y__%H_%M_%S")
 git commit -m $(echo "$now")
-git push
-git push --set-upstream origin master
+git push --force
+git push --set-upstream origin master --force
 git status
 
 
