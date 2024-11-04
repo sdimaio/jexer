@@ -2,7 +2,7 @@
 
 git config --global user.name "sdimaio"
 git config --global user.email "simmaco.dimaio@gmail.com"
-git remote add origin git@github.com:sdimaio/jexer.git
+git remote set-url origin git@github.com:sdimaio/jexer.git
 git checkout
 git status
 git add .
