@@ -1,5 +1,8 @@
 Jexer - Java Text User Interface library
+by [Autumn Lamonte](https://gitlab.com/AutumnMeowMeow)
 ========================================
+
+This is a fork of original gitlab [Autumn Lamone](https://gitlab.com/AutumnMeowMeow) project. Please, see [Jexer](https://gitlab.com/AutumnMeowMeow/jexer) original repository.
 
 This library implements a text-based windowing system loosely
 reminiscent of Borland's [Turbo
@@ -288,3 +291,4 @@ projects too:
 * [vtm](https://github.com/netxs-group/vtm)
 
 💖
+by [Autumn Lamonte](https://gitlab.com/AutumnMeowMeow)
