@@ -624,57 +624,7 @@ public class TTableWidget extends TWidget {
         final int gridRows) {
 
         super(parent, x, y, width, height);
-
-        /*
-        System.err.println("gridColumns " + gridColumns +
-            " gridRows " + gridRows);
-         */
-
-        if (gridColumns < 1) {
-            throw new IllegalArgumentException("Column count cannot be less " +
-                "than 1");
-        }
-        if (gridRows < 1) {
-            throw new IllegalArgumentException("Row count cannot be less " +
-                "than 1");
-        }
-
-        // Initialize the starting row and column.
-        rows.add(new Row(0));
-        columns.add(new Column(0));
-        assert (rows.get(0).height == 1);
-
-        // Place a grid of cells that fit in this space.
-        for (int row = 0; row < gridRows; row++) {
-            for (int column = 0; column < gridColumns; column++) {
-                Cell cell = new Cell(this, 0, 0, COLUMN_DEFAULT_WIDTH, 1,
-                    column, row);
-
-                if (DEBUG) {
-                    // For debugging: set a grid of cell index labels.
-                    cell.setText("" + row + " " + column);
-                }
-                rows.get(row).add(cell);
-                columns.get(column).add(cell);
-
-                if (columns.size() < gridColumns) {
-                    columns.add(new Column(column + 1));
-                }
-            }
-            if (row < gridRows - 1) {
-                rows.add(new Row(row + 1));
-            }
-        }
-        for (int i = 0; i < rows.size(); i++) {
-            rows.get(i).setY(i + (showColumnLabels ? COLUMN_LABEL_HEIGHT : 0));
-        }
-        for (int j = 0; j < columns.size(); j++) {
-            columns.get(j).setX((j * (COLUMN_DEFAULT_WIDTH + 1)) +
-                (showRowLabels ? rowLabelWidth : 0));
-        }
-        activate(columns.get(selectedColumn).get(selectedRow));
-
-        alignGrid();
+        setGridSize(gridColumns, gridRows);
     }
 
     /**
@@ -995,6 +945,97 @@ public class TTableWidget extends TWidget {
     // ------------------------------------------------------------------------
     // TTable -----------------------------------------------------------------
     // ------------------------------------------------------------------------
+
+    /**
+     * Set the size of the table grid.  All cells are reset to blank.
+     *
+     * @param gridColumns number of columns in grid
+     * @param gridRows number of rows in grid
+     */
+    public void setGridSize(final int gridColumns, final int gridRows) {
+
+        /*
+        System.err.println("gridColumns " + gridColumns +
+            " gridRows " + gridRows);
+         */
+
+        if (gridColumns < 1) {
+            throw new IllegalArgumentException("Column count cannot be less " +
+                "than 1");
+        }
+        if (gridRows < 1) {
+            throw new IllegalArgumentException("Row count cannot be less " +
+                "than 1");
+        }
+
+        // Remove old TFields from the window.
+        for (Row row: rows) {
+            for (Cell cell: row.cells) {
+                cell.cancelEdit();
+                cell.setText("");
+                cell.field.remove();
+            }
+        }
+
+        // Now redo with new cells.
+        columns = new ArrayList<Column>();
+        rows = new ArrayList<Row>();
+        top = 0;
+        left = 0;
+        selectedRow = 0;
+        selectedColumn = 0;
+        highlightRow = false;
+        highlightColumn = false;
+
+        // Initialize the starting row and column.
+        rows.add(new Row(0));
+        columns.add(new Column(0));
+        assert (rows.get(0).height == 1);
+
+        // Place a grid of cells that fit in this space.
+        for (int row = 0; row < gridRows; row++) {
+            for (int column = 0; column < gridColumns; column++) {
+                Cell cell = new Cell(this, 0, 0, COLUMN_DEFAULT_WIDTH, 1,
+                    column, row);
+
+                if (DEBUG) {
+                    // For debugging: set a grid of cell index labels.
+                    cell.setText("" + row + " " + column);
+                }
+                rows.get(row).add(cell);
+                columns.get(column).add(cell);
+
+                if (columns.size() < gridColumns) {
+                    columns.add(new Column(column + 1));
+                }
+            }
+            if (row < gridRows - 1) {
+                rows.add(new Row(row + 1));
+            }
+        }
+        for (int i = 0; i < rows.size(); i++) {
+            rows.get(i).setY(i + (showColumnLabels ? COLUMN_LABEL_HEIGHT : 0));
+        }
+        for (int j = 0; j < columns.size(); j++) {
+            columns.get(j).setX((j * (COLUMN_DEFAULT_WIDTH + 1)) +
+                (showRowLabels ? rowLabelWidth : 0));
+        }
+        activate(columns.get(selectedColumn).get(selectedRow));
+
+        alignGrid();
+    }
+
+    /**
+     * Reset all cells to blanks.
+     */
+    public void clearAll() {
+        for (Row row: rows) {
+            for (Cell cell: row.cells) {
+                cell.cancelEdit();
+                cell.setText("");
+            }
+        }
+    }
 
     /**
      * Generate the default letter name for a column number.

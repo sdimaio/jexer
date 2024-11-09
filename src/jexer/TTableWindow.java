@@ -68,6 +68,73 @@ public class TTableWindow extends TScrollableWindow {
     // ------------------------------------------------------------------------
 
     /**
+     * Public constructor.
+     *
+     * @param parent the main application
+     * @param title window title
+     * @param width width of window
+     * @param height height of window
+     */
+    public TTableWindow(final TApplication parent, final String title,
+        final int width, final int height) {
+
+        this(parent, title, 0, 0, width, height, RESIZABLE);
+    }
+
+    /**
+     * Public constructor.
+     *
+     * @param parent the main application
+     * @param title window title, will be centered along the top border
+     * @param width width of window
+     * @param height height of window
+     * @param flags bitmask of RESIZABLE, CENTERED, or MODAL
+     */
+    public TTableWindow(final TApplication parent, final String title,
+        final int width, final int height, final int flags) {
+
+        this(parent, title, 0, 0, width, height, flags);
+    }
+
+    /**
+     * Public constructor.
+     *
+     * @param parent the main application
+     * @param title window title, will be centered along the top border
+     * @param x column relative to parent
+     * @param y row relative to parent
+     * @param width width of window
+     * @param height height of window
+     */
+    public TTableWindow(final TApplication parent, final String title,
+        final int x, final int y, final int width, final int height) {
+
+        this(parent, title, x, y, width, height, RESIZABLE);
+    }
+
+    /**
+     * Public constructor.
+     *
+     * @param parent the main application
+     * @param title window title
+     * @param x column relative to parent
+     * @param y row relative to parent
+     * @param width width of window
+     * @param height height of window
+     * @param flags mask of RESIZABLE, CENTERED, or MODAL
+     */
+    @SuppressWarnings("this-escape")
+    public TTableWindow(final TApplication parent, final String title,
+        final int x, final int y, final int width, final int height,
+        final int flags) {
+
+        super(parent, title, x, y, width, height, flags);
+
+        tableField = addTable(0, 0, getWidth() - 2, getHeight() - 2);
+        setupAfterTable();
+    }
+
+    /**
      * Public constructor sets window title.
      *
      * @param parent the main application
@@ -75,12 +142,8 @@ public class TTableWindow extends TScrollableWindow {
      */
     @SuppressWarnings("this-escape")
     public TTableWindow(final TApplication parent, final String title) {
-
-        super(parent, title, 0, 0, parent.getScreen().getWidth() / 2,
+        this(parent, title, 0, 0, parent.getScreen().getWidth() / 2,
             parent.getScreen().getHeight() / 2 - 2, RESIZABLE | CENTERED);
-
-        tableField = addTable(0, 0, getWidth() - 2, getHeight() - 2);
-        setupAfterTable();
     }
 
     /**
@@ -98,6 +161,79 @@ public class TTableWindow extends TScrollableWindow {
             parent.getScreen().getWidth() / 2,
             parent.getScreen().getHeight() / 2 - 2,
             RESIZABLE | CENTERED);
+
+        tableField = addTable(0, 0, getWidth() - 2, getHeight() - 2, 1, 1);
+        setupAfterTable();
+        tableField.loadCsvFile(csvFile);
+    }
+
+    /**
+     * Public constructor loads a grid from a RFC4180 CSV file.
+     *
+     * @param parent the main application
+     * @param csvFile a File referencing the CSV data
+     * @param width width of window
+     * @param height height of window
+     * @throws IOException if a java.io operation throws
+     */
+    public TTableWindow(final TApplication parent, final File csvFile,
+        final int width, final int height) throws IOException {
+
+        this(parent, csvFile, 0, 0, width, height, RESIZABLE);
+    }
+
+    /**
+     * Public constructor loads a grid from a RFC4180 CSV file.
+     *
+     * @param parent the main application
+     * @param csvFile a File referencing the CSV data
+     * @param width width of window
+     * @param height height of window
+     * @param flags bitmask of RESIZABLE, CENTERED, or MODAL
+     * @throws IOException if a java.io operation throws
+     */
+    public TTableWindow(final TApplication parent, final File csvFile,
+        final int width, final int height, final int flags) throws IOException {
+
+        this(parent, csvFile, 0, 0, width, height, flags);
+    }
+
+    /**
+     * Public constructor loads a grid from a RFC4180 CSV file.
+     *
+     * @param parent the main application
+     * @param csvFile a File referencing the CSV data
+     * @param x column relative to parent
+     * @param y row relative to parent
+     * @param width width of window
+     * @param height height of window
+     * @throws IOException if a java.io operation throws
+     */
+    public TTableWindow(final TApplication parent, final File csvFile,
+        final int x, final int y,
+        final int width, final int height) throws IOException {
+
+        this(parent, csvFile, x, y, width, height, RESIZABLE);
+    }
+
+    /**
+     * Public constructor loads a grid from a RFC4180 CSV file.
+     *
+     * @param parent the main application
+     * @param csvFile a File referencing the CSV data
+     * @param x column relative to parent
+     * @param y row relative to parent
+     * @param width width of window
+     * @param height height of window
+     * @param flags mask of RESIZABLE, CENTERED, or MODAL
+     * @throws IOException if a java.io operation throws
+     */
+    @SuppressWarnings("this-escape")
+    public TTableWindow(final TApplication parent, final File csvFile,
+        final int x, final int y, final int width, final int height,
+        final int flags) throws IOException {
+
+        super(parent, csvFile.getName(), x, y, width, height, flags);
 
         tableField = addTable(0, 0, getWidth() - 2, getHeight() - 2, 1, 1);
         setupAfterTable();
@@ -568,6 +704,15 @@ public class TTableWindow extends TScrollableWindow {
             return true;
         }
         return false;
+    }
+
+    /**
+     * Retrieve the underlying TTableWidget.
+     *
+     * @return the table widget
+     */
+    public TTableWidget getTableWidget() {
+        return tableField;
     }
 
 }
