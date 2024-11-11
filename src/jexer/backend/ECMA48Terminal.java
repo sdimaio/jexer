@@ -45,7 +45,6 @@ import java.io.PrintWriter;
 import java.io.Reader;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.Callable;
@@ -53,7 +52,6 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
-import java.util.concurrent.TimeUnit;
 import javax.imageio.ImageIO;
 
 import jexer.bits.Cell;
@@ -1011,7 +1009,7 @@ public class ECMA48Terminal extends LogicalScreen
         // Disable mouse reporting and show cursor.  Defensive null check
         // here in case closeTerminal() is called twice.
         if (output != null) {
-            if (!jexer.TApplication.imageSupportTest) {
+            if (!jexer.TApplication.IMAGE_SUPPORT_TEST) {
                 output.printf("%s%s%s%s", mouse(false), cursor(true),
                     defaultColor(), xtermResetSixelSettings());
                 output.printf("\033[>4m");
@@ -3170,7 +3168,7 @@ public class ECMA48Terminal extends LogicalScreen
                         }
                     }
                     if ((reportsIterm2Images == false)
-                        && (jexer.TApplication.imageSupportTest == false)
+                        && (jexer.TApplication.IMAGE_SUPPORT_TEST == false)
                     ) {
                         // Terminal does not support iTerm2 images, disable
                         // them.

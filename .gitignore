@@ -45,3 +45,6 @@ examples/*.sh
 
 # Fonts for testing
 fonts/**
+
+.idea*
+

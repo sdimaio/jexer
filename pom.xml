@@ -5,8 +5,8 @@
   <packaging>jar</packaging>
   <name>Jexer</name>
   <description>Java Text User Interface library that resembles Turbo Vision</description>
-  <version>1.6.1-SNAPSHOT</version>
-  <url>https://gitlab.com/AutumnMeowMeow/jexer</url>
+  <version>1.7-SNAPSHOT</version>
+  <url>https://github.com/sdimaio/jexer</url>
 
   <licenses>
     <license>
@@ -19,18 +19,51 @@
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+    <lombok.version>1.18.26</lombok.version>
+    <slf4j.version>1.7.36</slf4j.version>
+    <tests.skip>true</tests.skip>
+    <logback-core.version>1.2.11</logback-core.version>
   </properties>
 
+  <dependencies>
+    <dependency>
+      <groupId>org.projectlombok</groupId>
+      <artifactId>lombok</artifactId>
+      <version>${lombok.version}</version>
+      <optional>true</optional>
+    </dependency>
+    <dependency>
+      <groupId>ch.qos.logback</groupId>
+      <artifactId>logback-core</artifactId>
+      <version>${logback-core.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>ch.qos.logback</groupId>
+      <artifactId>logback-classic</artifactId>
+      <version>${logback-core.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.slf4j</groupId>
+      <artifactId>jul-to-slf4j</artifactId>
+      <version>${slf4j.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.slf4j</groupId>
+      <artifactId>log4j-over-slf4j</artifactId>
+      <version>${slf4j.version}</version>
+    </dependency>
+  </dependencies>
+
   <scm>
-    <connection>scm:git:https://gitlab.com/AutumnMeowMeow/jexer.git</connection>
-    <developerConnection>scm:git:https://gitlab.com/AutumnMeowMeow/jexer.git</developerConnection>
-    <url>https://gitlab.com/AutumnMeowMeow/jexer</url>
+    <connection>scm:git:https://github.com/sdimaio/jexer.git</connection>
+    <developerConnection>scm:git:https://github.com/sdimaio/jexer.git</developerConnection>
+    <url>https://github.com/sdimaio/jexer</url>
     <tag>HEAD</tag>
   </scm>
 
   <issueManagement>
     <system>gitlab</system>
-    <url>https://gitlab.com/AutumnMeowMeow/jexer/issues</url>
+    <url>https://github.com/sdimaio/jexer/issues</url>
   </issueManagement>
 
   <distributionManagement>
@@ -142,7 +175,35 @@
               </dependency>
             </dependencies>
         -->
-      </plugin>
+    </plugin>
+      <plugin>
+        <artifactId>maven-assembly-plugin</artifactId>
+        <executions>
+          <execution>
+            <phase>package</phase>
+            <goals>
+              <goal>single</goal>
+            </goals>
+          </execution>
+        </executions>
+        <configuration>
+          <descriptorRefs>
+            <descriptorRef>jar-with-dependencies</descriptorRef>
+          </descriptorRefs>
+          <archive>
+            <manifest>
+              <mainClass>
+                jexer.demos.Demo1
+              </mainClass>
+
+            </manifest>
+            <manifestEntries>
+              <Implementation-Version>${project.version}</Implementation-Version>
+            </manifestEntries>
+          </archive>
+        </configuration>
+	  
+      </plugin>	    
 
       <plugin>
         <groupId>org.sonatype.plugins</groupId>
@@ -212,6 +273,11 @@
       <id>AutumnMeowMeow</id>
       <name>Autumn Lamonte</name>
       <email>AutumnWalksTheLake@gmail.com</email>
+    </developer>
+    <developer>
+      <id>sdimaio</id>
+      <name>Simmaco, Simone Di Maio</name>
+      <email>simmaco.dimaio@gmail.com</email>
     </developer>
   </developers>
 </project>

@@ -245,7 +245,7 @@ public class ECMA48 implements Runnable {
     /**
      * The version of the terminal to report in XTVERSION.
      */
-    private final String VERSION = "1.6.1";
+    private final String VERSION = "1.7";
 
     // ------------------------------------------------------------------------
     // Variables --------------------------------------------------------------
@@ -1259,7 +1259,8 @@ public class ECMA48 implements Runnable {
 
         List<DisplayLine> visibleLines = new ArrayList<DisplayLine>();
         visibleLines.addAll(preceedingBlankLines);
-        visibleLines.addAll(displayLines.subList(visibleTop, visibleBottom));
+        visibleLines.addAll(displayLines.subList(visibleTop,
+                Math.min(visibleBottom, displayLines.size())));
 
         // Fill in the blank lines on bottom
         int bottomBlankLines = visibleHeight - visibleLines.size();

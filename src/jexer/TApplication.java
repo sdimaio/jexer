@@ -75,6 +75,8 @@ import jexer.menu.TMenuItem;
 import jexer.menu.TSubMenu;
 import jexer.tackboard.Tackboard;
 import jexer.tackboard.MousePointer;
+import lombok.extern.slf4j.Slf4j;
+
 import static jexer.TCommand.*;
 import static jexer.TKeypress.*;
 
@@ -83,6 +85,7 @@ import static jexer.TKeypress.*;
  * application.  It manages windows, provides a menu bar and status bar, and
  * processes events received from the user.
  */
+@Slf4j
 public class TApplication implements Runnable {
 
     /**
@@ -99,17 +102,17 @@ public class TApplication implements Runnable {
      * state (do not restore the console).  This is used for generating
      * captures to test terminals that advertise images support.
      */
-    public static final boolean imageSupportTest = false;
+    public static final boolean IMAGE_SUPPORT_TEST = false;
 
     /**
      * If true, emit thread stuff to System.err.
      */
-    private static final boolean debugThreads = false;
+    private static final boolean DEBUG_THREADS = false;
 
     /**
      * If true, emit events being processed to System.err.
      */
-    private static final boolean debugEvents = false;
+    private static final boolean DEBUG_EVENTS = false;
 
     /**
      * If true, do "smart placement" on new windows that are not specified to
@@ -120,7 +123,7 @@ public class TApplication implements Runnable {
     /**
      * Two backend types are available.
      */
-    public static enum BackendType {
+    public enum BackendType {
         /**
          * A Swing JFrame.
          */
@@ -144,32 +147,32 @@ public class TApplication implements Runnable {
     /**
      * The primary event handler thread.
      */
-    private volatile WidgetEventHandler primaryEventHandler;
+    private WidgetEventHandler primaryEventHandler;
 
     /**
      * The secondary event handler thread.
      */
-    private volatile WidgetEventHandler secondaryEventHandler;
+    private WidgetEventHandler secondaryEventHandler;
 
     /**
      * The screen handler thread.
      */
-    private volatile ScreenHandler screenHandler;
+    private ScreenHandler screenHandler;
 
     /**
      * The widget receiving events from the secondary event handler thread.
      */
-    private volatile TWidget secondaryEventReceiver;
+    private TWidget secondaryEventReceiver;
 
     /**
      * Access to the physical screen, keyboard, and mouse.
      */
-    private Backend backend;
+    private final Backend backend;
 
     /**
      * The clipboard for copy and paste.
      */
-    private Clipboard clipboard = new Clipboard();
+    private final Clipboard clipboard = new Clipboard();
 
     /**
      * Actual mouse coordinate X.
@@ -205,7 +208,7 @@ public class TApplication implements Runnable {
     /**
      * The amount of millis between mouse up events to assume a double-click.
      */
-    private long doubleClickTime = 250;
+    private final long doubleClickTime = 250;
 
     /**
      * Event queue that is filled by run().
@@ -339,7 +342,7 @@ public class TApplication implements Runnable {
     /**
      * The list of commands to run before the next I/O check.
      */
-    private List<Runnable> invokeLaters = new LinkedList<Runnable>();
+    private final List<Runnable> invokeLaters = new LinkedList<Runnable>();
 
     /**
      * The last time the screen was resized.
@@ -414,7 +417,7 @@ public class TApplication implements Runnable {
     /**
      * The list of desktop/window effects to run.
      */
-    private List<Effect> effects = new LinkedList<Effect>();
+    private final List<Effect> effects = new LinkedList<Effect>();
 
     /**
      * WidgetEventHandler is the main event consumer loop.  There are at most
@@ -425,10 +428,10 @@ public class TApplication implements Runnable {
         /**
          * The main application.
          */
-        private TApplication application;
+        private final TApplication application;
 
         /**
-         * Whether or not this WidgetEventHandler is the primary or secondary
+         * Whether this WidgetEventHandler is the primary or secondary
          * thread.
          */
         private boolean primary = true;
@@ -454,9 +457,10 @@ public class TApplication implements Runnable {
             // the user have their terminal back.
             try {
                 runImpl();
-            } catch (Throwable t) {
+            } catch (final Exception e) {
                 this.application.restoreConsole();
-                t.printStackTrace();
+                e.printStackTrace();
+                log.error("Ops!", e);
                 this.application.exit();
             }
         }
@@ -491,7 +495,7 @@ public class TApplication implements Runnable {
                             break;
                         }
 
-                        if (debugThreads) {
+                        if (DEBUG_THREADS) {
                             System.err.printf("%d %s %s %s sleep %d millis\n",
                                 System.currentTimeMillis(), this,
                                 primary ? "primary" : "secondary",
@@ -502,7 +506,7 @@ public class TApplication implements Runnable {
                             this.wait(timeout);
                         }
 
-                        if (debugThreads) {
+                        if (DEBUG_THREADS) {
                             System.err.printf("%d %s %s %s AWAKE\n",
                                 System.currentTimeMillis(), this,
                                 primary ? "primary" : "secondary",
@@ -670,7 +674,7 @@ public class TApplication implements Runnable {
                 } // while (!application.quit)
 
                  // Flush the screen contents
-                if (debugThreads) {
+                if (DEBUG_THREADS) {
                     System.err.printf("%d %s backend.flushScreen()\n",
                         System.currentTimeMillis(), Thread.currentThread());
                 }
@@ -729,7 +733,8 @@ public class TApplication implements Runnable {
         final int windowHeight, final int fontSize)
         throws UnsupportedEncodingException {
 
-        if (imageSupportTest) {
+	log.debug("Starting application. Please, wait...");
+        if (IMAGE_SUPPORT_TEST) {
             backend = new ECMA48Backend(this, null, null, windowWidth,
                 windowHeight, fontSize);
             TApplicationImpl();
@@ -766,7 +771,8 @@ public class TApplication implements Runnable {
     public TApplication(final BackendType backendType)
         throws UnsupportedEncodingException {
 
-        if (imageSupportTest) {
+	log.debug("Starting application. Please, wait...");
+        if (IMAGE_SUPPORT_TEST) {
             backend = new ECMA48Backend(this, null, null);
             TApplicationImpl();
             return;
@@ -811,6 +817,7 @@ public class TApplication implements Runnable {
     public TApplication(final InputStream input,
         final OutputStream output) throws UnsupportedEncodingException {
 
+	log.debug("Starting application. Please, wait...");
         backend = new ECMA48Backend(this, input, output);
         TApplicationImpl();
     }
@@ -831,6 +838,7 @@ public class TApplication implements Runnable {
     public TApplication(final InputStream input, final Reader reader,
         final PrintWriter writer, final boolean setRawMode) {
 
+	log.debug("Starting application. Please, wait...");
         backend = new ECMA48Backend(this, input, reader, writer, setRawMode);
         TApplicationImpl();
     }
@@ -909,6 +917,7 @@ public class TApplication implements Runnable {
         desktop         = new TDesktop(this);
 
         final boolean animationsEnabled = true;
+	log.debug("animationsEnabled: {}", animationsEnabled);
         if (!animationsEnabled) {
             // If animations are disabled, we need additional timers.
 
@@ -1012,14 +1021,14 @@ public class TApplication implements Runnable {
                     // No I/O to dispatch, so wait until the backend
                     // provides new I/O.
                     try {
-                        if (debugThreads) {
+                        if (DEBUG_THREADS) {
                             System.err.println(System.currentTimeMillis() +
                                 " " + Thread.currentThread() + " MAIN sleep");
                         }
 
                         this.wait();
 
-                        if (debugThreads) {
+                        if (DEBUG_THREADS) {
                             System.err.println(System.currentTimeMillis() +
                                 " " + Thread.currentThread() + " MAIN AWAKE");
                         }
@@ -1097,7 +1106,7 @@ public class TApplication implements Runnable {
     protected boolean onCommand(final TCommandEvent command) {
         // Default: handle cmExit
         if (command.equals(cmExit)) {
-            if (imageSupportTest) {
+            if (IMAGE_SUPPORT_TEST) {
                 exit();
                 return true;
             }
@@ -1162,7 +1171,7 @@ public class TApplication implements Runnable {
 
         // Default: handle MID_EXIT
         if (menu.getId() == TMenu.MID_EXIT) {
-            if (imageSupportTest) {
+            if (IMAGE_SUPPORT_TEST) {
                 exit();
                 return true;
             }
@@ -1329,7 +1338,7 @@ public class TApplication implements Runnable {
      * Process background events, and update the screen.
      */
     private void finishEventProcessing() {
-        if (debugThreads) {
+        if (DEBUG_THREADS) {
             System.err.printf(System.currentTimeMillis() + " " +
                 Thread.currentThread() + " finishEventProcessing()\n");
         }
@@ -1391,7 +1400,7 @@ public class TApplication implements Runnable {
         // Wake up the screen repainter
         wakeScreenHandler();
 
-        if (debugThreads) {
+        if (DEBUG_THREADS) {
             System.err.printf(System.currentTimeMillis() + " " +
                 Thread.currentThread() + " finishEventProcessing() END\n");
         }
@@ -1405,7 +1414,7 @@ public class TApplication implements Runnable {
      */
     private void metaHandleEvent(final TInputEvent event) {
 
-        if (debugEvents) {
+        if (DEBUG_EVENTS) {
             System.err.printf(String.format("metaHandleEvents event: %s\n",
                     event)); System.err.flush();
         }
@@ -1488,7 +1497,7 @@ public class TApplication implements Runnable {
     private void primaryHandleEvent(final TInputEvent event) {
         assert (event != null);
 
-        if (debugEvents) {
+        if (DEBUG_EVENTS) {
             System.err.printf("%s primaryHandleEvent: %s\n",
                 Thread.currentThread(), event);
         }
@@ -1692,7 +1701,7 @@ public class TApplication implements Runnable {
                 dispatchToDesktop = false;
             }
 
-            if (debugEvents) {
+            if (DEBUG_EVENTS) {
                 System.err.printf("TApplication dispatch event: %s\n",
                     event);
                 System.err.printf("   Routed to: %s\n", window);
@@ -1700,7 +1709,7 @@ public class TApplication implements Runnable {
             }
             window.handleEvent(event);
             if (doubleClick != null) {
-                if (debugEvents) {
+                if (DEBUG_EVENTS) {
                     System.err.printf("  -- DOUBLE CLICK --\n");
                 }
                 window.handleEvent(doubleClick);
@@ -1738,7 +1747,7 @@ public class TApplication implements Runnable {
 
         TMouseEvent doubleClick = null;
 
-        if (debugEvents) {
+        if (DEBUG_EVENTS) {
             System.err.printf("%s secondaryHandleEvent: %s\n",
                 Thread.currentThread(), event);
         }
@@ -1802,7 +1811,7 @@ public class TApplication implements Runnable {
      * @param widget widget that will receive events
      */
     public final void enableSecondaryEventReceiver(final TWidget widget) {
-        if (debugThreads) {
+        if (DEBUG_THREADS) {
             System.err.println(System.currentTimeMillis() +
                 " enableSecondaryEventReceiver()");
         }
@@ -1821,7 +1830,7 @@ public class TApplication implements Runnable {
      * Yield to the secondary thread.
      */
     public final void yield() {
-        if (debugThreads) {
+        if (DEBUG_THREADS) {
             System.err.printf(System.currentTimeMillis() + " " +
                 Thread.currentThread() + " yield()\n");
         }
@@ -1875,14 +1884,14 @@ public class TApplication implements Runnable {
      * Do stuff when there is no user input.
      */
     private void doIdle() {
-        if (debugThreads) {
+        if (DEBUG_THREADS) {
             System.err.printf(System.currentTimeMillis() + " " +
                 Thread.currentThread() + " doIdle()\n");
         }
 
         synchronized (timers) {
 
-            if (debugThreads) {
+            if (DEBUG_THREADS) {
                 System.err.printf(System.currentTimeMillis() + " " +
                     Thread.currentThread() + " doIdle() 2\n");
             }
@@ -1906,7 +1915,7 @@ public class TApplication implements Runnable {
             timers.addAll(keepTimers);
         }
 
-        if (debugThreads) {
+        if (DEBUG_THREADS) {
             System.err.printf(System.currentTimeMillis() + " " +
                 Thread.currentThread() + " doIdle() 3\n");
         }
@@ -1931,7 +1940,7 @@ public class TApplication implements Runnable {
         }
         doRepaint();
 
-        if (debugThreads) {
+        if (DEBUG_THREADS) {
             System.err.printf(System.currentTimeMillis() + " " +
                 Thread.currentThread() + " doIdle() - exit\n");
         }
@@ -2109,7 +2118,7 @@ public class TApplication implements Runnable {
             if (fillEventQueue.size() > 0) {
                 // User input is waiting, that will update the screen.  Wake
                 // the backend reader.
-                if (debugEvents) {
+                if (DEBUG_EVENTS) {
                     System.err.printf("Drop: input waiting in backend\n");
                 }
                 wakeAndReturn = true;
@@ -2126,7 +2135,7 @@ public class TApplication implements Runnable {
             if (now - screenHandler.lastFlushTime < screenHandler.lastFrameTime) {
                 // We cannot update the screen this quickly.  Drop this
                 // request.
-                if (debugEvents) {
+                if (DEBUG_EVENTS) {
                     System.err.printf("Drop: %d millis to render, %d since\n",
                         screenHandler.lastFrameTime,
                         now - screenHandler.lastFlushTime);
@@ -2308,7 +2317,7 @@ public class TApplication implements Runnable {
         String version = getClass().getPackage().getImplementationVersion();
         if (version == null) {
             // This is Java 9+, use a hardcoded string here.
-            version = "1.6.1";
+            version = "1.7";
         }
         messageBox(i18n.getString("aboutDialogTitle"),
             MessageFormat.format(i18n.getString("aboutDialogText"), version),
@@ -2560,7 +2569,7 @@ public class TApplication implements Runnable {
     protected void onPreDraw() {
         // Default does nothing
 
-        if (imageSupportTest) {
+        if (IMAGE_SUPPORT_TEST) {
             menuTrayText = String.format("%d x %d cells, %d x %d cell size",
                 getScreen().getWidth(), getScreen().getHeight(),
                 getScreen().getTextWidth(), getScreen().getTextHeight());
@@ -2586,7 +2595,7 @@ public class TApplication implements Runnable {
     private void drawTextMouse(final int x, final int y) {
         TWindow activeWindow = getActiveWindow();
 
-        if (debugThreads) {
+        if (DEBUG_THREADS) {
             System.err.printf("%d %s drawTextMouse() %d %d\n",
                 System.currentTimeMillis(), Thread.currentThread(), x, y);
 
@@ -2667,7 +2676,7 @@ public class TApplication implements Runnable {
     private void drawAll() {
         boolean menuIsActive = false;
 
-        if (debugThreads) {
+        if (DEBUG_THREADS) {
             System.err.printf("%d %s drawAll() enter\n",
                 System.currentTimeMillis(), Thread.currentThread());
         }
@@ -2676,12 +2685,12 @@ public class TApplication implements Runnable {
         if (!repaint && (customMousePointer == null)
             && (customWidgetMousePointer == null)
         ) {
-            if (debugThreads) {
+            if (DEBUG_THREADS) {
                 System.err.printf("%d %s drawAll() !repaint\n",
                     System.currentTimeMillis(), Thread.currentThread());
             }
             if ((oldDrawnMouseX != mouseX) || (oldDrawnMouseY != mouseY)) {
-                if (debugThreads) {
+                if (DEBUG_THREADS) {
                     System.err.printf("%d %s drawAll() !repaint MOUSE\n",
                         System.currentTimeMillis(), Thread.currentThread());
                 }
@@ -2690,7 +2699,7 @@ public class TApplication implements Runnable {
 
                 // Redraw the old cell at that position, and save the cell at
                 // the new mouse position.
-                if (debugThreads) {
+                if (DEBUG_THREADS) {
                     System.err.printf("%d %s restoreImage() %d %d\n",
                         System.currentTimeMillis(), Thread.currentThread(),
                         oldDrawnMouseX, oldDrawnMouseY);
@@ -2747,7 +2756,7 @@ public class TApplication implements Runnable {
             return;
         }
 
-        if (debugThreads) {
+        if (DEBUG_THREADS) {
             System.err.printf("%d %s drawAll() REDRAW\n",
                 System.currentTimeMillis(), Thread.currentThread());
         }
@@ -2887,7 +2896,7 @@ public class TApplication implements Runnable {
         }
 
         // Draw the mouse pointer
-        if (debugThreads) {
+        if (DEBUG_THREADS) {
             System.err.printf("%d %s restoreImage() %d %d\n",
                 System.currentTimeMillis(), Thread.currentThread(),
                 oldDrawnMouseX, oldDrawnMouseY);
@@ -4127,7 +4136,7 @@ public class TApplication implements Runnable {
             synchronized (fillEventQueue) {
                 fillEventQueue.add(event);
             }
-            if (debugThreads) {
+            if (DEBUG_THREADS) {
                 System.err.println(System.currentTimeMillis() + " " +
                     Thread.currentThread() + " postEvent() wake up main");
             }
@@ -4145,7 +4154,7 @@ public class TApplication implements Runnable {
             synchronized (fillEventQueue) {
                 fillEventQueue.add(event);
             }
-            if (debugThreads) {
+            if (DEBUG_THREADS) {
                 System.err.println(System.currentTimeMillis() + " " +
                     Thread.currentThread() + " postMenuEvent() wake up main");
             }
