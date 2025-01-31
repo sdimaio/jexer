@@ -117,7 +117,7 @@ public class TWindow extends TWidget {
     /**
      * Window's parent TApplication.
      */
-    private TApplication application;
+    private final TApplication application;
 
     /**
      * Z order.  Lower number means more in-front.
@@ -129,7 +129,7 @@ public class TWindow extends TWidget {
      * the window directly rather than processed through the menu
      * accelerators.
      */
-    private Set<TKeypress> keyboardShortcuts = new HashSet<TKeypress>();
+    private final Set<TKeypress> keyboardShortcuts = new HashSet<TKeypress>();
 
     /**
      * If true, then the user clicked on the title bar and is moving the
@@ -255,7 +255,7 @@ public class TWindow extends TWidget {
     /**
      * The window open effect timer.
      */
-    private TTimer openEffectTimer = null;
+    private final TTimer openEffectTimer = null;
 
     // ------------------------------------------------------------------------
     // Constructors -----------------------------------------------------------

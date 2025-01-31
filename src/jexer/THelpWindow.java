@@ -50,7 +50,7 @@ public class THelpWindow extends TWindow {
     // ------------------------------------------------------------------------
 
     // Default help topic keys.
-    public static String HELP_HELP                      = "Help On Help";
+    public static final String HELP_HELP                      = "Help On Help";
 
     // ------------------------------------------------------------------------
     // Variables --------------------------------------------------------------
@@ -59,32 +59,32 @@ public class THelpWindow extends TWindow {
     /**
      * The help text window.
      */
-    private THelpText helpText;
+    private final THelpText helpText;
 
     /**
      * The "Contents" button.
      */
-    private TButton contentsButton;
+    private final TButton contentsButton;
 
     /**
      * The "Index" button.
      */
-    private TButton indexButton;
+    private final TButton indexButton;
 
     /**
      * The "Previous" button.
      */
-    private TButton previousButton;
+    private final TButton previousButton;
 
     /**
      * The "Close" button.
      */
-    private TButton closeButton;
+    private final TButton closeButton;
 
     /**
      * The X position for the buttons.
      */
-    private int buttonOffset = 14;
+    private static final int BUTTON_OFFSET = 14;
 
     // ------------------------------------------------------------------------
     // Constructors -----------------------------------------------------------
@@ -115,13 +115,13 @@ public class THelpWindow extends TWindow {
         setMinimumWindowWidth(30);
 
         helpText = new THelpText(this, topic, 1, 1,
-            getWidth() - buttonOffset - 4, getHeight() - 4);
+            getWidth() - BUTTON_OFFSET - 4, getHeight() - 4);
 
         setHelpTopic(topic);
 
         // Buttons
         previousButton = addButton(i18n.getString("previousButton"),
-            getWidth() - buttonOffset, 4,
+            getWidth() - BUTTON_OFFSET, 4,
             new TAction() {
                 public void DO() {
                     if (application.helpTopics.size() > 1) {
@@ -135,7 +135,7 @@ public class THelpWindow extends TWindow {
             });
 
         contentsButton = addButton(i18n.getString("contentsButton"),
-            getWidth() - buttonOffset, 6,
+            getWidth() - BUTTON_OFFSET, 6,
             new TAction() {
                 public void DO() {
                     setHelpTopic(application.helpFile.getTableOfContents());
@@ -143,7 +143,7 @@ public class THelpWindow extends TWindow {
             });
 
         indexButton = addButton(i18n.getString("indexButton"),
-            getWidth() - buttonOffset, 8,
+            getWidth() - BUTTON_OFFSET, 8,
             new TAction() {
                 public void DO() {
                     setHelpTopic(application.helpFile.getIndex());
@@ -151,7 +151,7 @@ public class THelpWindow extends TWindow {
             });
 
         closeButton = addButton(i18n.getString("closeButton"),
-            getWidth() - buttonOffset, 10,
+            getWidth() - BUTTON_OFFSET, 10,
             new TAction() {
                 public void DO() {
                     // Don't copy anything, just close the window.
@@ -186,18 +186,17 @@ public class THelpWindow extends TWindow {
     public void onResize(final TResizeEvent event) {
         if (event.getType() == TResizeEvent.Type.WIDGET) {
 
-            previousButton.setX(getWidth() - buttonOffset);
-            contentsButton.setX(getWidth() - buttonOffset);
-            indexButton.setX(getWidth() - buttonOffset);
-            closeButton.setX(getWidth() - buttonOffset);
+            previousButton.setX(getWidth() - BUTTON_OFFSET);
+            contentsButton.setX(getWidth() - BUTTON_OFFSET);
+            indexButton.setX(getWidth() - BUTTON_OFFSET);
+            closeButton.setX(getWidth() - BUTTON_OFFSET);
 
-            helpText.setDimensions(1, 1, getWidth() - buttonOffset - 4,
+            helpText.setDimensions(1, 1, getWidth() - BUTTON_OFFSET - 4,
                 getHeight() - 4);
             helpText.onResize(new TResizeEvent(event.getBackend(),
                     TResizeEvent.Type.WIDGET, helpText.getWidth(),
                     helpText.getHeight()));
 
-            return;
         } else {
             super.onResize(event);
         }
@@ -259,12 +258,8 @@ public class THelpWindow extends TWindow {
      * @param topic the topic to display
      */
     private void setHelpTopic(final Topic topic) {
-        boolean separator = true;
-        if ((topic == getApplication().helpFile.getTableOfContents())
-            || (topic == getApplication().helpFile.getIndex())
-        ) {
-            separator = false;
-        }
+        boolean separator = (topic != getApplication().helpFile.getTableOfContents())
+                && (topic != getApplication().helpFile.getIndex());
 
         getApplication().helpTopics.add(topic);
         helpText.setTopic(topic, separator);

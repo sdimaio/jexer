@@ -43,7 +43,7 @@ public class TKeypressEvent extends TInputEvent {
     /**
      * Keystroke received.
      */
-    private TKeypress key;
+    private final TKeypress key;
 
     // ------------------------------------------------------------------------
     // Constructors -----------------------------------------------------------
@@ -134,11 +134,11 @@ public class TKeypressEvent extends TInputEvent {
      */
     @Override
     public int hashCode() {
-        int A = 13;
-        int B = 23;
-        int hash = A;
-        hash = (B * hash) + getTime().hashCode();
-        hash = (B * hash) + key.hashCode();
+                int a = 13;
+                int b = 23;
+                int hash = a;
+                hash = (b * hash) + getTime().hashCode();
+                hash = (b * hash) + key.hashCode();
         return hash;
     }
 
@@ -168,11 +168,10 @@ public class TKeypressEvent extends TInputEvent {
     /**
      * Create a duplicate instance.
      *
-     * @return duplicate intance
+     * @return duplicate instance
      */
     public TKeypressEvent dup() {
-        TKeypressEvent keypress = new TKeypressEvent(getBackend(), key.dup());
-        return keypress;
+        return new TKeypressEvent(getBackend(), key.dup());
     }
 
 }
